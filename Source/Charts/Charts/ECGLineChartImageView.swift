@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreGraphics
+import UIKit
 
 /// Chart that draws lines, surfaces, circles, ...
 open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
@@ -27,7 +28,7 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
         print("DOVG: don't draw line chart")
     }
     
-    func chartImage(_ rect: CGRect, dataSet: LineChartDataSet) -> UIImage? {
+    public func chartImage(_ rect: CGRect, dataSet: LineChartDataSet) -> UIImage? {
         guard data != nil, let renderer = renderer else { return nil }
         
         let optionalContext = UIGraphicsGetCurrentContext()
