@@ -41,7 +41,10 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
 //        guard let lineData = dataProvider?.lineData else { return nil }
 //
 //        let sets = lineData.dataSets as? [LineChartDataSet]
-        (renderer as! LineChartRenderer).drawDataSet(context: context, dataSet: dataSet)
+        DispatchQueue.global().async {
+            (renderer as! LineChartRenderer).drawDataSet(context: context, dataSet: dataSet)
+        }
+        
         
 //        renderer.drawData(context: context)
         
