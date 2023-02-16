@@ -28,20 +28,11 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
         print("DOVG: don't draw line chart")
     }
     
-    public func chartImage(_ rect: CGRect, dataSet: LineChartDataSet, completion: @escaping (UIImage?)->()) {
+    public func chartImage(_ rect: CGRect, dataSet: LineChartDataSet, context: CGContext, completion: @escaping (UIImage?)->()) {
         guard data != nil, let renderer = renderer else {
             completion(nil)
             return
         }
-        
-        let optionalContext = UIGraphicsGetCurrentContext()
-        guard let context = optionalContext else {
-            completion(nil)
-            return
-        }
-
-        context.setFillColor(UIColor.red.cgColor)
-        context.fill(rect)
         
         
 //        guard let lineData = dataProvider?.lineData else { return nil }
