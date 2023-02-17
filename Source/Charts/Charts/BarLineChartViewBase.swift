@@ -168,6 +168,126 @@ open class BarLineChartViewBase: ChartViewBase, BarLineScatterCandleBubbleChartD
         }
     }
     
+    public func draw(in context: CGContext) {
+        // execute all drawing commands
+        guard data != nil, let renderer = renderer else { return }
+        drawGridBackground(context: context)
+        
+
+        if _autoScaleMinMaxEnabled
+        {
+            autoScale()
+        }
+
+        if leftAxis.isEnabled
+        {
+            leftYAxisRenderer.computeAxis(min: leftAxis._axisMinimum, max: leftAxis._axisMaximum, inverted: leftAxis.isInverted)
+        }
+        
+        if rightAxis.isEnabled
+        {
+            rightYAxisRenderer.computeAxis(min: rightAxis._axisMinimum, max: rightAxis._axisMaximum, inverted: rightAxis.isInverted)
+        }
+        
+        if xAxis.isEnabled
+        {
+            xAxisRenderer.computeAxis(min: xAxis._axisMinimum, max: xAxis._axisMaximum, inverted: false)
+        }
+        
+        xAxisRenderer.renderAxisLine(context: context)
+        leftYAxisRenderer.renderAxisLine(context: context)
+        rightYAxisRenderer.renderAxisLine(context: context)
+
+        // The renderers are responsible for clipping, to account for line-width center etc.
+        if xAxis.drawGridLinesBehindDataEnabled
+        {
+            xAxisRenderer.renderGridLines(context: context)
+            leftYAxisRenderer.renderGridLines(context: context)
+            rightYAxisRenderer.renderGridLines(context: context)
+        }
+        
+        if xAxis.isEnabled && xAxis.isDrawLimitLinesBehindDataEnabled
+        {
+            xAxisRenderer.renderLimitLines(context: context)
+        }
+        
+        if leftAxis.isEnabled && leftAxis.isDrawLimitLinesBehindDataEnabled
+        {
+            leftYAxisRenderer.renderLimitLines(context: context)
+        }
+        
+        if rightAxis.isEnabled && rightAxis.isDrawLimitLinesBehindDataEnabled
+        {
+            rightYAxisRenderer.renderLimitLines(context: context)
+        }
+        
+        context.saveGState()
+
+        // make sure the data cannot be drawn outside the content-rect
+        if clipDataToContentEnabled {
+            context.clip(to: viewPortHandler.contentRect)
+        }
+
+        renderer.drawData(context: context)
+        
+        // The renderers are responsible for clipping, to account for line-width center etc.
+        if !xAxis.drawGridLinesBehindDataEnabled
+        {
+            xAxisRenderer.renderGridLines(context: context)
+            leftYAxisRenderer.renderGridLines(context: context)
+            rightYAxisRenderer.renderGridLines(context: context)
+        }
+        
+        // if highlighting is enabled
+        if (valuesToHighlight())
+        {
+            renderer.drawHighlighted(context: context, indices: highlighted)
+        }
+        
+        context.restoreGState()
+        
+        renderer.drawExtras(context: context)
+        
+        if xAxis.isEnabled && !xAxis.isDrawLimitLinesBehindDataEnabled
+        {
+            xAxisRenderer.renderLimitLines(context: context)
+        }
+        
+        if leftAxis.isEnabled && !leftAxis.isDrawLimitLinesBehindDataEnabled
+        {
+            leftYAxisRenderer.renderLimitLines(context: context)
+        }
+        
+        if rightAxis.isEnabled && !rightAxis.isDrawLimitLinesBehindDataEnabled
+        {
+            rightYAxisRenderer.renderLimitLines(context: context)
+        }
+        
+        xAxisRenderer.renderAxisLabels(context: context)
+        leftYAxisRenderer.renderAxisLabels(context: context)
+        rightYAxisRenderer.renderAxisLabels(context: context)
+
+        if clipValuesToContentEnabled
+        {
+            context.saveGState()
+            context.clip(to: viewPortHandler.contentRect)
+            
+            renderer.drawValues(context: context)
+            
+            context.restoreGState()
+        }
+        else
+        {
+            renderer.drawValues(context: context)
+        }
+
+        legendRenderer.renderLegend(context: context)
+
+        drawDescription(in: context)
+        
+        drawMarkers(context: context)
+    }
+    
     open override func draw(_ rect: CGRect)
     {
         super.draw(rect)

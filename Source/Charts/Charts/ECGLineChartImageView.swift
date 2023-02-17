@@ -29,10 +29,7 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
     }
     
     public func chartImage(_ rect: CGRect, dataSet: LineChartDataSet, completion: @escaping (UIImage?)->()) {
-        guard data != nil, let renderer = renderer else {
-            completion(nil)
-            return
-        }
+        
         UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         let optionalContext = UIGraphicsGetCurrentContext()
         guard let context = optionalContext else {
@@ -45,7 +42,7 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
 //
 //        let sets = lineData.dataSets as? [LineChartDataSet]
         DispatchQueue.global().async {
-            super.draw(rect)
+            super.draw(in: context)
             //(renderer as! LineChartRenderer).drawDataSet(context: context, dataSet: dataSet)
             guard let image = context.makeImage() else {
                 completion(nil)
