@@ -45,7 +45,8 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
 //
 //        let sets = lineData.dataSets as? [LineChartDataSet]
         DispatchQueue.global().async {
-            (renderer as! LineChartRenderer).drawDataSet(context: context, dataSet: dataSet)
+            super.draw(rect)
+            //(renderer as! LineChartRenderer).drawDataSet(context: context, dataSet: dataSet)
             guard let image = context.makeImage() else {
                 completion(nil)
                 return
@@ -57,30 +58,9 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
                 completion(uiImage)
             }
         }
-        
-        
-//        renderer.drawData(context: context)
-        
-//        if clipValuesToContentEnabled
-//        {
-//            context.saveGState()
-//            context.clip(to: CGRect(x: 0, y: 0, width: , height: <#T##CGFloat#>))
-//
-//            renderer.drawValues(context: context)
-//
-//            context.restoreGState()
-//        }
-//        else
-//        {
-//            renderer.drawValues(context: context)
-//        }
-
-//        legendRenderer.renderLegend(context: context)
-//
-//        drawMarkers(context: context)
-        
-        
-        
+    }
+    
+    func drawIn(context: CGContext, dataSet: LineChartDataSet) {
         
     }
 }
