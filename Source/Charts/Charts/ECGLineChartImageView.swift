@@ -39,9 +39,6 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
             completion(nil)
             return
         }
-
-        context.setFillColor(UIColor.red.cgColor)
-        context.fill(rect)
         
         
 //        guard let lineData = dataProvider?.lineData else { return nil }
