@@ -119,7 +119,7 @@ open class ChartViewBase: NSUIView, ChartDataProvider, AnimatorDelegate
     }()
 
     /// flag that indicates if offsets calculation has already been done or not
-    private var offsetsCalculated = false
+    public var offsetsCalculated = false
 
     /// The array of currently highlighted values. This might an empty if nothing is highlighted.
     @objc open internal(set) var highlighted = [Highlight]()
