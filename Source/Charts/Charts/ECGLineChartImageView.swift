@@ -22,15 +22,10 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
     // MARK: - LineChartDataProvider
     
     open var lineData: LineChartData? { return data as? LineChartData }
-    var context: CGContext?
+    
     override open func draw(_ rect: CGRect) {
         // DO NOTHING
         print("DOVG: don't draw line chart")
-        let optionalContext = UIGraphicsGetCurrentContext()
-        guard let context = optionalContext else {
-            return
-        }
-        self.context = context
     }
     
     public func chartImage(_ rect: CGRect, dataSet: LineChartDataSet, completion: @escaping (UIImage?)->()) {
@@ -38,8 +33,16 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
             completion(nil)
             return
         }
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0)
+        let optionalContext = UIGraphicsGetCurrentContext()
+        guard let context = optionalContext else {
+            completion(nil)
+            return
+        }
+
+        context.setFillColor(UIColor.red.cgColor)
+        context.fill(rect)
         
-        guard let context = context else { return }
         
 //        guard let lineData = dataProvider?.lineData else { return nil }
 //
@@ -53,7 +56,7 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
             
             DispatchQueue.main.async {
                 let uiImage = UIImage(cgImage: image)
-
+                UIGraphicsEndImageContext()
                 completion(uiImage)
             }
         }
