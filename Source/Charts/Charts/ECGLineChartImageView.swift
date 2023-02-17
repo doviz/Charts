@@ -33,7 +33,7 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
             completion(nil)
             return
         }
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0)
+        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         let optionalContext = UIGraphicsGetCurrentContext()
         guard let context = optionalContext else {
             completion(nil)
