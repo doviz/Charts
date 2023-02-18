@@ -1,5 +1,5 @@
 //
-//  ECGLineChartImageView.swift
+//  LineChartImageView.swift
 //  Charts
 //
 //  Created by Dov Goldberg on 16/02/2023.
@@ -10,7 +10,7 @@ import CoreGraphics
 import UIKit
 
 /// Chart that draws lines, surfaces, circles, ...
-open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
+open class LineChartImageView: BarLineChartViewBase, LineChartDataProvider
 {
     internal override func initialize()
     {
@@ -28,7 +28,7 @@ open class ECGLineChartImageView: BarLineChartViewBase, LineChartDataProvider
         print("DOVG: don't draw line chart")
     }
     
-    public func chartImage(_ rect: CGRect, dataSet: LineChartDataSet, completion: @escaping (UIImage?)->()) {
+    public func chartImage(_ rect: CGRect, completion: @escaping (UIImage?)->()) {
         
         UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
         let optionalContext = UIGraphicsGetCurrentContext()
