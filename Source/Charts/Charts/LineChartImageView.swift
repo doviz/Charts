@@ -30,22 +30,25 @@ open class LineChartImageView: BarLineChartViewBase, LineChartDataProvider
     
     public func chartImage(_ rect: CGRect, completion: @escaping (UIImage?)->()) {
         
-        UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
-        let optionalContext = UIGraphicsGetCurrentContext()
-        guard let context = optionalContext else {
-            completion(nil)
-            return
-        }
+        
         DispatchQueue.global().async {
+            UIGraphicsBeginImageContextWithOptions(rect.size, false, UIScreen.main.scale)
+            let optionalContext = UIGraphicsGetCurrentContext()
+            guard let context = optionalContext else {
+                completion(nil)
+                return
+            }
             super.draw(in: context)
             guard let image = context.makeImage() else {
                 completion(nil)
                 return
             }
             
+            let uiImage = UIImage(cgImage: image)
+            
+            UIGraphicsEndImageContext()
+            
             DispatchQueue.main.async {
-                let uiImage = UIImage(cgImage: image)
-                UIGraphicsEndImageContext()
                 completion(uiImage)
             }
         }
